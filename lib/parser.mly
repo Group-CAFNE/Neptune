@@ -27,6 +27,9 @@
 %%
 
 (* Source file is parsed starting from the axiom. *)
+(* if voice1 in semantic action refers to a node in the AST
+   if voice1 is part of the rule, it is a non-terminal
+  vc1 is a variable that transfers a value from the rule to the voice1 in the semantic action*)
 prog:
   | p = params seql = list(seqdef) vc1 = voice1 vc2 = voice2 vc3 = voice3 EOF
     { {parameters = p; sequences = seql; voice1 = vc1; voice2 = vc2; voice3 = vc3 } }
