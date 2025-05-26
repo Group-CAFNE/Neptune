@@ -25,7 +25,7 @@ Curious to learn more? You can access the complete project report [here](https:/
             * [Optional Flags](#optional-flags)
             * [Examples](#examples)
     * [Code Snippet Sample](#code-snippet-samples)
-        * [Incy Wincy Spider](#incy-wincy-spider)
+        * [What Is Love](#what-is-love)
     * [Playing the Music](#playing-the-music)
         * [Using an Emulator (Recommended: Vice)](#using-an-emulator-recommended-vice)
     * [Socials for Project Founders](#socials-for-project-founders)
