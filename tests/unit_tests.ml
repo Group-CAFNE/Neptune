@@ -27,33 +27,6 @@ let setup_and_teardown test_fn _ctx =
   (* Clear the symbol table after the test *)
   Hashtbl.clear symbol_table
 
-(*---------------- TEST PPRINT TARGET AST ----------------*)
-
-(* Asserts that the correct generic node representation of a note is created *)
-let test_note_to_generic _ctx =
-  let note = { AST_TGT.highfreq = 16; AST_TGT.lowfreq = 195; AST_TGT.duration = 96 } in (* Mock a note *)
-  let expected_node = PP_TGT.Node ("Note", [
-    Leaf "High frequency: 16";
-    Leaf "Low frequency: 195";
-    Leaf "Duration: 96 frames";
-  ]) in
-  assert_equal expected_node (PP_TGT.note_to_generic note)
-
-  
-(*---------------- TEST PPRINT SOURCE AST ----------------*)
-
-(* Asserts that the correct generic node representation of a note is created *)
-let test_ast_to_generic_note_sound _ctx =
-  let note = AST_SRC.Sound (C, Sharp, Quarter, Defined 4) in (* Mock a note *)
-  let expected = PP_SRC.Node ("Sound Note", [
-    Leaf "Tone: C";
-    Leaf "Accidental: Sharp";
-    Leaf "Fraction: Quarter";
-    Leaf "Octave: Defined(4)"
-  ]) in
-  assert_equal expected (PP_SRC.ast_to_generic_note note)
-
-
 (*---------------- TEST SUITE SETUP ----------------*)
 
 (*Setup of the test suite. The suite consist of sub suites*)
@@ -87,12 +60,6 @@ let suite =
         "test_waveform_translate" >:: Test_ast_translate.test_waveform_translate;
         "test_ident_translate" >:: Test_ast_translate.test_ident_translate;
         "test_voice_translate" >:: Test_ast_translate.test_voice_translate;
-      ];
-      "Pprint Target Ast Tests" >::: [
-        "test_note_to_generic" >:: test_note_to_generic;
-      ];
-      "Pprint Source Ast Tests" >::: [
-        "test_ast_to_generic_note_sound" >:: test_ast_to_generic_note_sound;
       ];
   ]
 

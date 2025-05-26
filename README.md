@@ -145,19 +145,24 @@ These flags can be added individually or combined to get different outputs or be
 
 More code samples can be found [here](https://github.com/P4-Group/Neptune/tree/main/src_code_samples).
 
-#### Incy Wincy Spider
+#### What Is Love
 ```
-tempo = 300
+tempo = 110
 timeSignature = (4,4)
 standardPitch = 440
 
-sequence seq1 = { c:4:5 c:4:5 c:4:5 d:4:5 e:4:5 e:4:5 e:2:5 d:4:5 d:4:5 d:4:5 e:4:5 c:2:5 c:2:5 }
-sequence seq2 = { a:4:1 a:4:1 a:4:1 b:4:1 c:4:2 c:4:2 c:2:2 b:4:1 b:4:1 b:4:1 c:4:2 a:2:1 a:2:1 }
-sequence seq3 = { c:4:3 c:4:3 c:4:3 d:4:3 e:4:3 e:4:3 e:2:3 d:4:3 d:4:3 d:4:3 e:4:3 c:2:3 c:2:3 }
+sequence melody = { r:2 d:8:4 f:8:4 d:8:4 f:8:4 | r:8 d:8:4 r:4 r:4 d:8:4 f:8:4 | 
+                    r:8 d:8:4 r:4 r:4 d:8:4 c:8:4 | r:2 r:8 d:8:4 f:8:4 g:8:4 } 
+sequence bass1 = { d:8:3 r:8 d:8:3 r:8 d:8:3 r:16 d:16:3 r:8 e_:8:3 }
+sequence bass2 = { c:8:3 r:8 c:8:3 r:8 c:8:3 r:16 c:16:3 r:8 c:8:3 }
+sequence mid1 = { b_:8:3 a:8:3 b_:8:3 g:8:3 }
+sequence mid2 = { b_:8:3 a:8:3 b_:8:3 f:8:3 }
+sequence mid3 = { a:8:3 g:8:3 a:8:3 f:8:3 }
 
-voice1 = [(seq1, vPulse), (seq1, sawtooth)]
-voice2 = [(seq2, vPulse), (seq2, sawtooth)]
-voice3 = [(seq3, vPulse), (seq3, sawtooth)]
+voice1 = [(melody, vPulse)]
+voice2 = [(bass1, sawtooth), (bass1, sawtooth), (bass1, sawtooth), (bass2, sawtooth)]
+voice3 = [(mid1, triangle), (mid1, triangle), (mid2, triangle), (mid2, triangle), 
+          (mid3, triangle), (mid3, triangle), (mid3, triangle), (mid3, triangle)]
 ```
 
 ## Playing the Music

@@ -1,99 +1,67 @@
 open Ast_src
 
-(* Define a generic AST type *)
-type generic_ast =
-  | Node of string * (generic_ast list) 
-  | Leaf of string                      
 
-(* Conversion of source AST to a generic AST *)
-let rec ast_to_generic_ast (file : Ast_src.file) : generic_ast =
-  let params_node =
-    Node ("Parameters", [
-      Leaf (Printf.sprintf "Tempo: %s" (match file.parameters.tempo with Some t -> string_of_int t | None -> "None"));
-      Leaf (Printf.sprintf "Time Signature: %s"
-              (match file.parameters.timesig with
-                | Some (n, d) -> Printf.sprintf "%d/%d" n d
-                | None -> "None"));
-      Leaf (Printf.sprintf "Standard Pitch: %s"
-              (match file.parameters.stdpitch with Some p -> string_of_int p | None -> "None"))
-    ])
+(* Prints the data structure of Ast_src as is*)
+let pp_src (ast : Ast_src.file) =
+  (* Helper functions for printing components *)
+  let string_of_tone = function
+    | A -> "A" | B -> "B" | C -> "C" | D -> "D"
+    | E -> "E" | F -> "F" | G -> "G" in
+  
+  let string_of_acc = function
+    | Nat -> "" | Sharp -> "#" | Flat -> "b" in
+  
+  let string_of_frac = function
+    | Whole -> "1" | Half -> "1/2" | Quarter -> "1/4"
+    | Eighth -> "1/8" | Sixteenth -> "1/16" in
+  
+  let string_of_oct = function
+    | None -> "" | Defined n -> string_of_int n in
+  
+  let string_of_note = function 
+  (* Turns the note into a string by concatenating the components *)
+    | Sound (tone, acc, frac, oct) ->
+        Printf.sprintf "%s%s %s %s"
+          (string_of_tone tone) (string_of_acc acc)
+          (string_of_frac frac) (string_of_oct oct)
+    | Rest frac -> Printf.sprintf "Rest %s" (string_of_frac frac) in
+  
+  let string_of_waveform = function
+    | Noise -> "Noise" | Vpulse -> "Vpulse"
+    | Sawtooth -> "Sawtooth" | Triangle -> "Triangle" in
+  
+  (* Print parameters *)
+  Printf.printf "Parameters:\n";
+  (match ast.parameters.tempo with
+   | Some t -> Printf.printf "  Tempo: %d\n" t
+   | None -> Printf.printf "  Tempo: None\n");
+  (match ast.parameters.timesig with
+   | Some (n, d) -> Printf.printf "  Time Signature: %d/%d\n" n d
+   | None -> Printf.printf "  Time Signature: None\n");
+  (match ast.parameters.stdpitch with
+   | Some p -> Printf.printf "  Standard Pitch: %d\n" p
+   | None -> Printf.printf "  Standard Pitch: None\n");
+  
+  (* Print sequences *)
+  Printf.printf "\nSequences:\n";
+  List.iter (fun seqdef ->
+    Printf.printf "  %s: [" seqdef.name;
+    List.iter (fun note ->
+      Printf.printf "%s; " (string_of_note note)
+    ) seqdef.seq;
+    Printf.printf "]\n\n"
+  ) ast.sequences;
+  
+  (* Print voices *)
+  let print_voice name voice =
+    Printf.printf "\nVoice %s:\n" name;
+    List.iter (fun (id, wf) ->
+      Printf.printf "  %s: %s\n" id (string_of_waveform wf)
+    ) voice
   in
-  let sequences_node =
-    Node ("Sequences", List.map (fun seqdef ->
-      Node ("Sequence", [
-        Leaf (Printf.sprintf "Identifier: %s" seqdef.name);
-        ast_to_generic_seq seqdef.seq
-      ])
-    ) file.sequences)
-  in
-  let voice_node name voice =
-    Node (name, List.map (fun (ident, waveform) ->
-      Node ("Voice", [
-        Leaf (Printf.sprintf "Identifier: %s" ident);
-        Leaf (Printf.sprintf "Waveform: %s" (match waveform with
-          | Noise -> "Noise"
-          | Vpulse -> "Pulse"
-          | Sawtooth -> "Sawtooth"
-          | Triangle -> "Triangle"))
-      ])
-    ) voice)
-  in
-  Node ("File", [
-    params_node;
-    sequences_node;
-    voice_node "Voice 1" file.voice1;
-    voice_node "Voice 2" file.voice2;
-    voice_node "Voice 3" file.voice3
-  ])
+  print_voice "1" ast.voice1;
+  print_voice "2" ast.voice2;
+  print_voice "3" ast.voice3
 
-  and ast_to_generic_seq seq = Node ("Simple Sequence", List.map ast_to_generic_note seq)
 
-  and ast_to_generic_note note =
-    match note with
-      | Sound (tone, acc, frac, oct) ->
-          Node ("Sound Note", [
-            Leaf (Printf.sprintf "Tone: %s" (pprint_tone tone));
-            Leaf (Printf.sprintf "Accidental: %s" (pprint_acc acc));
-            Leaf (Printf.sprintf "Fraction: %s" (pprint_frac frac));
-            Leaf (Printf.sprintf "Octave: %s" (pprint_oct oct))
-          ])
-      | Rest frac ->
-          Node ("Rest Note", [Leaf (Printf.sprintf "Fraction: %s" (pprint_frac frac))])
 
-  and pprint_tone tone =
-    match tone with
-      | A -> "A" | B -> "B" | C -> "C" | D -> "D" | E -> "E" | F -> "F" | G -> "G"
-
-  and pprint_acc acc =
-    match acc with
-      | Nat -> "Natural"
-      | Sharp -> "Sharp"
-      | Flat -> "Flat"
-
-  and pprint_frac frac =
-    match frac with
-      | Whole -> "Whole"
-      | Half -> "Half"
-      | Quarter -> "Quarter"
-      | Eighth -> "Eighth"
-      | Sixteenth -> "Sixteenth"
-
-  and pprint_oct oct =
-    match oct with
-      | None -> "None"
-      | Defined i -> Printf.sprintf "Defined(%d)" i
-
-  (* Pretty-print a generic AST *)
-  let rec pprint_generic_ast ?(indent_level=0) ast =
-    let indent = String.make (indent_level * 2) ' ' in
-    match ast with
-      | Node (name, children) ->
-          Printf.printf "%s%s:\n" indent name;
-          List.iter (pprint_generic_ast ~indent_level:(indent_level + 1)) children
-      | Leaf value ->
-          Printf.printf "%s- %s\n" indent value
-
-  (* Entry point for pretty-printing a file *)
-  let pprint_file file =
-    let generic_ast = ast_to_generic_ast file in
-    pprint_generic_ast generic_ast

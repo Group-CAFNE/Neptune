@@ -100,14 +100,14 @@ let () =
         [Runtime_options.get_debug; Runtime_options.get_src_ast]
         (fun () ->
           Printf.printf "Source AST:\n";
-          Pprint_src.pprint_file ast_src);
+          Pprint_src.pp_src ast_src);
 
       (* Print the target AST if debug or tgt_ast option is set *)
       Runtime_options.conditional_option
         [Runtime_options.get_debug; Runtime_options.get_tgt_ast]
         (fun () ->
           Printf.printf "Target AST:\n";
-          Pprint_tgt.pprint_file ast_tgt);
+          Pprint_tgt.pp_tgt ast_tgt);
 
 
       (* Clean the output file before writing *)

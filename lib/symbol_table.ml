@@ -11,6 +11,7 @@ type symbol_info = (* a record data structure used for grouping related informat
     seq : sequence_type; (* list of notes *)
   }
 
+
 (* Creating symbol table *)
 let symbol_table : (string, symbol_info) Hashtbl.t = Hashtbl.create 10
 
@@ -54,7 +55,10 @@ let update_sequence id seq =
     (* We check if the sequence has been successfully updated using pretty print *)
     match symbol with
       | SequenceSymbol {seq = FinalSequence final_seq} ->
-          Pprint_tgt.pprint_notes final_seq
+        Printf.printf "  Sequence contains %d notes\n" (List.length final_seq);
+        List.iteri (fun i _ -> 
+          Printf.printf "Note %d\n" (i + 1) 
+        ) final_seq
       | _ -> raise (SyntaxErrorException "Updated sequence not found")
   )
 
