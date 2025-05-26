@@ -1,5 +1,5 @@
 
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+![Logo](https://cdn.corenexis.com/view/?img=mm/ma26/s0A9qV.png)
 
 
 # Neptune - An Intermediate Language for Music Composition on the Commodore 64
