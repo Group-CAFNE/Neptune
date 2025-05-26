@@ -1,0 +1,29 @@
+# This is an example package definition file
+opam-version: "2.0"
+maintainer: "maintainergroupmail@samplemicrosoft.com"
+authors: [ "Cecilie Vebner" "Alberte Lohse" "Felix Bjerre" "Nikolaj Van Gool" "Emil Andersen" ]
+license: "AGPL-3.0-only"
+homepage: "https://github.com/P4-Group/C64-MC"
+bug-reports: "https://github.com/P4-Group/C64-MC/issues"
+dev-repo: "git+https://github.com/P4-Group/C64-MC.git"
+synopsis: "A compiler which translate an easily understood langauge to music on C64"
+
+depends: [
+  "ocaml" {>= "4.07.0"}
+  "menhirLib" {>= "0"}
+  "dune" {>= "3.17"}
+]
+build: [
+  ["dune" "subst"] {dev}
+  [
+    "dune"
+    "build"
+    "-p"
+    name
+    "-j"
+    jobs
+    "@install"
+    "@runtest" {with-test}
+    "@doc" {with-doc}
+  ]
+]

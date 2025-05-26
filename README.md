@@ -8,7 +8,7 @@ Neptune is an intermediate language designed to bridge the gap between high-leve
 
 This project was created as part of a fourth-semester semester project at Aalborg University (Copenhagen). Our task was to develop a compiler, and we chose to translate a custom music language into 6502 assembly code. This assembly code can then be executed on the Commodore 64, allowing it to utilize the SID 6581 sound chip to produce authentic 8-bit chiptune music.
 
-Curious to learn more? You can access the complete project report [here](https://github.com/P4-Group/Neptune-Report/blob/main/SW4_Group_8.pdf).
+Curious to learn more? You can access the complete project report [here](https://github.com/Group-CAFNE/Neptune-Report/blob/main/SW4_Group_8.pdf).
 
 [Click here](http://www.youtube.com/watch?v=EqYkdAdsoK8) below to hear a sample of the Tetris theme, produced by Neptune.
 
@@ -25,7 +25,7 @@ Curious to learn more? You can access the complete project report [here](https:/
             * [Optional Flags](#optional-flags)
             * [Examples](#examples)
     * [Code Snippet Sample](#code-snippet-samples)
-        * [Incy Wincy Spider](#incy-wincy-spider)
+        * [What Is Love](#what-is-love)
     * [Playing the Music](#playing-the-music)
         * [Using an Emulator (Recommended: Vice)](#using-an-emulator-recommended-vice)
     * [Socials for Project Founders](#socials-for-project-founders)
@@ -188,7 +188,7 @@ We highly recommend using the **Vice** emulator. Here is how to load and play yo
 
 Vice will automatically load and run the program, and you should hear your sweet Nep**tunes**!
 
-### Recommended Settings for VICE
+### Recommended VICE Settings
 
 To achieve the most accurate emulation of the SID 6581, and well-produced sound output we recommend the following audio settings in VICE:
 * Go to Preferences > Settings > Audio > SID
