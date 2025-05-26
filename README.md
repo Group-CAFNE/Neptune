@@ -8,7 +8,7 @@ Neptune is an intermediate language designed to bridge the gap between high-leve
 
 This project was created as part of a fourth-semester semester project at Aalborg University (Copenhagen). Our task was to develop a compiler, and we chose to translate a custom music language into 6502 assembly code. This assembly code can then be executed on the Commodore 64, allowing it to utilize the SID 6581 sound chip to produce authentic 8-bit chiptune music.
 
-Curious to learn more? You can access the complete project report [here](https://github.com/P4-Group/Neptune-Report/blob/main/SW4_Group_8.pdf).
+Curious to learn more? You can access the complete project report [here](https://github.com/Group-CAFNE/Neptune-Report/blob/main/SW4_Group_8.pdf).
 
 [Click here](http://www.youtube.com/watch?v=EqYkdAdsoK8) below to hear a sample of the Tetris theme, produced by Neptune.
 
