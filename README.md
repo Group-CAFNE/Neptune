@@ -120,7 +120,7 @@ These flags can be added individually or combined to get different outputs or be
 | `-dasm` | Enable the use of DASM to assemble output. Requires the DASM executable to be available in your system's PATH. |
 | `-tgt-ast` | Display the Target Abstract Syntax Tree (AST) that the compiler generates. |
 | `-src-ast` | Display the Source Abstract Syntax Tree (AST) as parsed from your input file. |
-| `-sym-tab` | Print the compiler's Symbol Table, showing defined symbols and their properties. |
+| `-sym-tab` | Print the amount of elements within the symbol table. |
 | `-debug` | Turn on debug mode for more detailed output that can help with troubleshooting. |
 | `-h` | Show a help message with all available options and exit. |
 
