@@ -101,7 +101,6 @@ let update_sequence id seq =
   if Runtime_options.get_sym_tab () then (
     (* Print the updated sequence id *)
     Printf.printf "Updated sequence: %s \n" id;
-
     (* We check if the sequence has been successfully updated using pretty print *)
     match symbol with
     | SequenceSymbol {seq = FinalSequence final_seq} ->
