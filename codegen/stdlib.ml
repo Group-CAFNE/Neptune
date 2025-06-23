@@ -1,5 +1,5 @@
 let init = {|
-;; Isolate program init
+;; Raster Initialisation
                 processor 6502
                 org 2049
 
@@ -64,7 +64,7 @@ raster:
 |}
 
 let playinit = {|
-;; Isolate Play
+;; SID Initialisation
                 org $1000
 play_init:      
                 ldx #$00
@@ -95,8 +95,8 @@ play_init:
                 rts
 |}
 
-let note_initation = {|
-;; Isolate note Initiation
+let note_initialisation = {|
+;; Note Initialisation
 gatebit_off:    
                 lda #$00
                 sta v_waveform,x
@@ -132,7 +132,7 @@ counter_init:
 |}
 
 let play_loop = {|
-;; Isolate Play loop
+;; Main Loop
 play:           
                 ldx #$00
 
@@ -172,7 +172,7 @@ update_sid:
 |}
 
 let fetches = {|
-;; Isolate Fetch Notes/sequences
+;; Fetch Notes
 fetch:          
                 lda v_ptrlo,x
                 sta temp1
@@ -263,7 +263,7 @@ fetch_note:
 |}
 
 let voice_data = {|
-;; Isolate voice data
+;; Voice Variables
 v_regindex:     dc.b $00,$07,$0E
 v_freqlo:       dc.b $00,$00,$00
 v_freqlo_new:   dc.b $00,$00,$00
@@ -284,7 +284,7 @@ v_rtnhi:        dc.b $00,$00,$00
 |}
 
 let instrument_data = {|
-;; Isolate instrument data
+;; Instrument Variables
 i_pulselo:      dc.b $00,$00,$00,$00
 i_pulsehi:      dc.b $00,$02,$00,$00
 i_pulsespeed:   dc.b $00,$20,$00,$00

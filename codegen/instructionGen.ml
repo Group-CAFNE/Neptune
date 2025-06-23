@@ -82,6 +82,7 @@ let waveform_to_byte = function
     repeat for the two other voices
   *)
 let gen_voice (file : Target_Ast.file) =
+  write_line_tf (";; Voice Data");
   let write_voice label voice =
     write_line_tf (label ^ ":");
     if (voice = []) then 
@@ -118,6 +119,7 @@ let gen_voice (file : Target_Ast.file) =
   Ends by writing dc.b $FF to signal the end of the sequence.  
 *)
 let gen_sequence () =
+  write_line_tf (";; Sequence Data");
   let symbol_table = Sym.get_symbol_table () in
   Hashtbl.iter (fun id value -> 
       match value with
@@ -151,7 +153,7 @@ let gen_sequence () =
 let run_example () =
   write_stdlib Stdlib.init;
   write_stdlib Stdlib.playinit;
-  write_stdlib Stdlib.note_initation;
+  write_stdlib Stdlib.note_initialisation;
   write_stdlib Stdlib.play_loop;
   write_stdlib Stdlib.fetches;
   write_stdlib Stdlib.voice_data; 
