@@ -27,8 +27,58 @@ let add_sequence id seq =
 
   let symbol = SequenceSymbol {seq = RawSequence seq} in 
   Hashtbl.add symbol_table id symbol;
-  if Runtime_options.get_sym_tab () then
-    Printf.printf "Added sequence: %s \n" id
+  
+  if Runtime_options.get_sym_tab () then (
+    (* Print the added sequence id *)
+    Printf.printf "Added sequence: %s \n" id;
+
+    (* We check if the sequence has been successfully added using pretty print *)
+    match symbol with
+    | SequenceSymbol {seq = RawSequence raw_seq} ->
+      Printf.printf "  Sequence contains %d notes\n" (List.length raw_seq);
+      
+      (* Print table header *)
+      Printf.printf "    +----------+-----------+----------+----------+\n";
+      Printf.printf "    | Type     | Tone/Acc  | Duration | Octave   |\n";
+      Printf.printf "    +----------+-----------+----------+----------+\n";
+
+      (* Print each note in the sequence *)
+      List.iter (fun note ->
+        match note with
+        | Ast_src.Sound (tone, acc, frac, oct) ->
+          let tone_str = match tone with
+            | Ast_src.A -> "A" | Ast_src.B -> "B" | Ast_src.C -> "C"
+            | Ast_src.D -> "D" | Ast_src.E -> "E" | Ast_src.F -> "F" | Ast_src.G -> "G"
+          in
+          let acc_str = match acc with
+            | Ast_src.Nat -> "" | Ast_src.Sharp -> "#" | Ast_src.Flat -> "b"
+          in
+          let frac_str = match frac with
+            | Ast_src.Whole -> "Whole" | Ast_src.Half -> "Half"
+            | Ast_src.Quarter -> "Quarter" | Ast_src.Eighth -> "Eighth"
+            | Ast_src.Sixteenth -> "Sixteenth"
+          in
+          let oct_str = match oct with
+            | Ast_src.None -> "None"
+            | Ast_src.Defined n -> string_of_int n
+          in
+          Printf.printf "    | Sound    | %-9s | %-8s | %-8s |\n"
+            (tone_str ^ acc_str) frac_str oct_str
+        | Ast_src.Rest frac ->
+          let frac_str = match frac with
+            | Ast_src.Whole -> "Whole" | Ast_src.Half -> "Half"
+            | Ast_src.Quarter -> "Quarter" | Ast_src.Eighth -> "Eighth"
+            | Ast_src.Sixteenth -> "Sixteenth"
+          in
+          Printf.printf "    | Rest     | %-9s | %-8s | %-8s |\n"
+            "-" frac_str "-"
+      ) raw_seq;
+      
+      Printf.printf "    +----------+-----------+----------+----------+\n";
+      Printf.printf "\n\n\n"
+
+    | _ -> raise (SyntaxErrorException "Added sequence has unexpected type")
+  )
 
 
 (* This function checks if the sequence id exists. If not, an error will be thrown. *)
@@ -51,7 +101,29 @@ let update_sequence id seq =
   if Runtime_options.get_sym_tab () then (
     (* Print the updated sequence id *)
     Printf.printf "Updated sequence: %s \n" id;
-  )
+    (* We check if the sequence has been successfully updated using pretty print *)
+    match symbol with
+    | SequenceSymbol {seq = FinalSequence final_seq} ->
+      Printf.printf "  Sequence contains %d notes\n" (List.length final_seq);
+      
+      
+      (* Print table header *)
+      Printf.printf "    +----------+-----------+----------+\n";
+      Printf.printf "    | Low Freq | High Freq | Duration |\n";
+      Printf.printf "    +----------+-----------+----------+\n";
+
+      (* Print each note in the sequence *)
+      List.iter (fun note ->
+        Printf.printf "    | %-8d | %-9d | %-8d |\n"
+          note.Ast_tgt.lowfreq note.Ast_tgt.highfreq note.Ast_tgt.duration
+      ) final_seq;
+
+      
+      Printf.printf "    +----------+-----------+----------+\n";
+      Printf.printf "\n\n\n"
+
+      | _ -> raise (SyntaxErrorException "Updated sequence not found")
+      )
 
 (* This function retrieves a sequence (value) from the symbol table by the id (key). 
   If no sequence matching the specified id is found in the symbol table, an error is thrown. *)
