@@ -28,7 +28,8 @@ let add_sequence id seq =
   let symbol = SequenceSymbol {seq = RawSequence seq} in 
   Hashtbl.add symbol_table id symbol;
   
-  if Runtime_options.get_sym_tab () then (
+  (* If the symbol table is enabled, we print the sequence id and its contents *)
+  Runtime_options.conditional_option [Runtime_options.get_sym_tab] (fun () ->  
     (* Print the added sequence id *)
     Printf.printf "Added sequence: %s \n" id;
 
@@ -78,7 +79,7 @@ let add_sequence id seq =
       Printf.printf "\n\n\n"
 
     | _ -> raise (SyntaxErrorException "Added sequence has unexpected type")
-  )
+  ) 
 
 
 (* This function checks if the sequence id exists. If not, an error will be thrown. *)
@@ -98,7 +99,7 @@ let update_sequence id seq =
   let symbol = SequenceSymbol {seq = FinalSequence seq} in 
   Hashtbl.replace symbol_table id symbol;
   
-  if Runtime_options.get_sym_tab () then (
+  Runtime_options.conditional_option [Runtime_options.get_sym_tab] (fun () ->
     (* Print the updated sequence id *)
     Printf.printf "Updated sequence: %s \n" id;
     (* We check if the sequence has been successfully updated using pretty print *)
