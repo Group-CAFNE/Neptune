@@ -51,13 +51,7 @@ let update_sequence id seq =
   if Runtime_options.get_sym_tab () then (
     (* Print the updated sequence id *)
     Printf.printf "Updated sequence: %s \n" id;
-
-    (* We check if the sequence has been successfully updated using pretty print *)
-    match symbol with
-    | SequenceSymbol {seq = FinalSequence final_seq} ->
-      Printf.printf "  Sequence contains %d notes\n" (List.length final_seq);
-      | _ -> raise (SyntaxErrorException "Updated sequence not found")
-      )
+  )
 
 (* This function retrieves a sequence (value) from the symbol table by the id (key). 
   If no sequence matching the specified id is found in the symbol table, an error is thrown. *)

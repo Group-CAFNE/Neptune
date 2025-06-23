@@ -96,9 +96,8 @@ let gen_voice (file : Target_Ast.file) =
           construct_instruction "dc.w" [id]
         ]
       ) voice;
-    let indentation = String.make (4 * 4) ' ' in  (* 4 tabs, 4 spaces each = 16 spaces *)
-    write_line_tf (indentation ^ "dc.b $FD");
-    write_line_tf (indentation ^ "dc.w " ^ label)
+
+    write_instr_group ["dc.b $FD"; "dc.w " ^ label];
   in
   write_voice "voice1" file.vc1;
   write_voice "voice2" file.vc2;
@@ -109,7 +108,7 @@ let gen_voice (file : Target_Ast.file) =
     if n < 0 then
       raise (InvalidArgumentException "Negative integers cannot be converted to hexadecimal")
     else
-      Printf.sprintf "%02X" n
+      Printf.sprintf "%02X" n (* 2 character, automatically converted hexidecimal number, add zero in front if only one character *)
 
 
 (*Function to generate code for the sequences in assembly
@@ -122,7 +121,7 @@ let gen_sequence () =
   let symbol_table = Sym.get_symbol_table () in
   Hashtbl.iter (fun id value -> 
       match value with
-        | Sym.SequenceSymbol {seq;_} -> (*The note lists are here somewhere*)
+        | Sym.SequenceSymbol {seq} -> (*The note lists are here somewhere*)
           match seq with
             | Sym.FinalSequence seq -> (* The definition of the note lists from the target AST *)
               write_line_tf (id ^ ":"); (*Write the label*)
